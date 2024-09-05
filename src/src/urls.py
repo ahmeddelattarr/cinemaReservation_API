@@ -6,5 +6,6 @@ from tickets import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('rest/fbv/', views.FBV_List),
+    path('rest/pk/<int:pk>',views.FBV_PK)
 
 ]

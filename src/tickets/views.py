@@ -1,8 +1,4 @@
-from django.core.serializers import serialize
-from django.shortcuts import render
 from rest_framework import status
-from rest_framework.status import HTTP_201_CREATED
-
 from .models import Movie,Guest,Reservation
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -22,11 +18,34 @@ def FBV_List(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-@api_view()
+@api_view(['GET','PUT','DELETE'])
 #post-put-get
-#todo def FBV_List(request):
+def FBV_PK(request,pk):
+    try :
+        guest=Guest.objects.get(pk=pk)
+    except Guest.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method=='GET':
+        serializer=GuestSerializer(guest)
+        return Response(serializer.data)
+
+    elif request.method=='PUT':
+        serializer=GuestSerializer(guest,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method=='DELETE':
+        guest.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
 
 
 
