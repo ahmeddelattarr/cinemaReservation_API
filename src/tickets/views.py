@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, viewsets,filters
 from .models import Movie,Guest,Reservation
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -42,6 +42,24 @@ def FBV_PK(request,pk):
     if request.method=='DELETE':
         guest.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+#better approach
+
+class ViewsetsGuest(viewsets.ModelViewSet):
+    queryset=Guest.objects.all()
+    serializer_class = GuestSerializer
+class ViewsetsMovie(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    filter_backends=[filters.SearchFilter]
+    search_fields=['movie']
+
+class ViewsetsReservation(viewsets.ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+
+
+
 
 
 
