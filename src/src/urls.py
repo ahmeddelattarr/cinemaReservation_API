@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('rest/fbv/', views.FBV_List),
     path('rest/pk/<int:pk>',views.FBV_PK),
-    path('rest/',include(router.urls))
+    path('rest/',include(router.urls)),
+   # path('making_reservation/',views.making_reservation),
 
 ]
